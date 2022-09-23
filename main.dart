@@ -61,7 +61,11 @@ class _HomePageState extends State<HomePage> {
               builder: (context, state) {
                 return BlocBuilder<CounterCubit, CounterState>(
                   builder: (context, state) {
-                    return Text(state.counterValue.toString());
+                    return BlocBuilder<CounterCubit, CounterState>(
+                      builder: (context, state) {
+                        return Text(state.counterValue.toString());
+                      },
+                    );
                   },
                 );
               },
