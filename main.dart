@@ -21,9 +21,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,9 +39,31 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            BlocBuilder<CounterCubit, CounterState>(
+            BlocConsumer<CounterCubit, CounterState>(
+              listener: (context, state) {
+                // TODO: implement listener
+                if (state.isIncremented == true) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Incremented"),
+                      duration: Duration(milliseconds: 2),
+                    ),
+                  );
+                } else if (state.isIncremented == false) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Decrement"),
+                      duration: Duration(milliseconds: 2),
+                    ),
+                  );
+                }
+              },
               builder: (context, state) {
-                return Text(state.counterValue.toString());
+                return BlocBuilder<CounterCubit, CounterState>(
+                  builder: (context, state) {
+                    return Text(state.counterValue.toString());
+                  },
+                );
               },
             ),
             const SizedBox(
